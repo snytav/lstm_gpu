@@ -153,5 +153,28 @@ hist = np.zeros(num_epochs)
 start_time = time.time()
 lstm = []
 
+x_test_cpu = x_test.to("cpu")
+model_cpu = model.to("cpu")
+y_test_pred = model_cpu(x_test_cpu)
 
+y_test_pred = model_cpu(x_test_cpu)
+
+inv_y_test      = scaler.inverse_transform(y_test_lstm.cpu().detach().numpy())
+inv_y_test_pred = scaler.inverse_transform(y_test_pred.detach().numpy())
+plt.figure()
+plt.plot(data[['Close']])
+
+xx = np.arange(len(data[['Close']].values)-inv_y_test.shape[0],
+                     len(data[['Close']].values))
+plt.plot(xx,inv_y_test,color='green',label='test set')
+plt.plot(xx,inv_y_test_pred,color='red',label='prediction')
+
+inv_y_test_pred
+
+
+qq = 0
+# predict = pd.DataFrame(scaler.inverse_transform(y_train_pred.detach().numpy()))
+# original = pd.DataFrame(scaler.inverse_transform(y_train_lstm.detach().numpy()))
+
+from sklearn.metrics import mean_absolute_percentage_error
 
